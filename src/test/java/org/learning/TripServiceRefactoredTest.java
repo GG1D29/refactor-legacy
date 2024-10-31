@@ -21,6 +21,7 @@ class TripServiceRefactoredTest {
     @BeforeEach
     void setUp() {
         tripService = new TestableTripService();
+        loggedInUser = REGISTERED_USER;
     }
 
     @Test
@@ -33,7 +34,6 @@ class TripServiceRefactoredTest {
 
     @Test
     void should_ReturnNoTrips_When_UserNotFriends() {
-        loggedInUser = REGISTERED_USER;
 
         User stranger = new User();
         stranger.addFriend(ANOTHER_USER);
@@ -45,7 +45,6 @@ class TripServiceRefactoredTest {
 
     @Test
     void should_ReturnTrips_When_UserAreFriends() {
-        loggedInUser = REGISTERED_USER;
 
         User friend = new User();
         friend.addFriend(ANOTHER_USER);
