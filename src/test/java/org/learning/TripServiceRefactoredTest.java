@@ -15,21 +15,17 @@ class TripServiceRefactoredTest {
     private static final User ANOTHER_USER = new User();
     private static final Trip LONDON = new Trip();
     private static final Trip BARCELONA = new Trip();
-    private User loggedInUser;
     private TripService tripService;
 
     @BeforeEach
     void setUp() {
         tripService = new TestableTripService();
-        loggedInUser = REGISTERED_USER;
     }
 
     @Test
     void should_ThrowsException_When_UserNotLoggedIn() {
-        loggedInUser = GUEST;
-
         assertThrows(UserNotLoggedInException.class,
-                () -> tripService.getTripsByUser(ANY_USER));
+                () -> tripService.getTripsByUser(ANY_USER, GUEST));
     }
 
     @Test
@@ -40,7 +36,7 @@ class TripServiceRefactoredTest {
                 .withTripsTo(LONDON)
                 .build();
 
-        List<Trip> trips = tripService.getTripsByUser(stranger);
+        List<Trip> trips = tripService.getTripsByUser(stranger, REGISTERED_USER);
         assertThat(trips).isEmpty();
     }
 
@@ -51,15 +47,11 @@ class TripServiceRefactoredTest {
                 .withTripsTo(LONDON, BARCELONA)
                 .build();
 
-        List<Trip> trips = tripService.getTripsByUser(friend);
+        List<Trip> trips = tripService.getTripsByUser(friend, REGISTERED_USER);
         assertThat(trips).containsExactlyInAnyOrder(LONDON, BARCELONA);
     }
 
     private class TestableTripService extends TripService {
-        @Override
-        User getLoggedInUser() {
-            return loggedInUser;
-        }
 
         @Override
         List<Trip> getTripsBy(User user) {
