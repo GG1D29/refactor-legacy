@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class TripServiceRefactoredTest {
+class TripServiceTest {
     private static final User GUEST = null;
     private static final User ANY_USER = new User();
     private static final User REGISTERED_USER = new User();

@@ -6,30 +6,30 @@ import java.util.List;
 public class TripService {
     private TripDAO tripDAO;
 
-    public TripService() {
-        this.tripDAO = new TripDAO();
-    }
-
     public TripService(TripDAO tripDAO) {
         this.tripDAO = tripDAO;
     }
 
     public List<Trip> getTripsByUser(User user, User loggedInUser) {
 
-        if (loggedInUser == null) {
-            throw new UserNotLoggedInException();
-        }
+        validate(loggedInUser);
 
         return user.isFriendsWith(loggedInUser)
                 ? getTripsBy(user)
                 : noTrips();
     }
 
-    List<Trip> noTrips() {
+    private void validate(User loggedInUser) {
+        if (loggedInUser == null) {
+            throw new UserNotLoggedInException();
+        }
+    }
+
+    private List<Trip> noTrips() {
         return new ArrayList<>();
     }
 
-    List<Trip> getTripsBy(User user) {
+    private List<Trip> getTripsBy(User user) {
         return tripDAO.findTripsBy(user);
     }
 
