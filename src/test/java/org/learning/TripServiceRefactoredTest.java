@@ -35,9 +35,10 @@ class TripServiceRefactoredTest {
     @Test
     void should_ReturnNoTrips_When_UserNotFriends() {
 
-        User stranger = new User();
-        stranger.addFriend(ANOTHER_USER);
-        stranger.addTrip(LONDON);
+        User stranger = UserBuilder.aUser()
+                .friendsWith(ANOTHER_USER)
+                .withTripsTo(LONDON)
+                .build();
 
         List<Trip> trips = tripService.getTripsByUser(stranger);
         assertThat(trips).isEmpty();
@@ -45,12 +46,10 @@ class TripServiceRefactoredTest {
 
     @Test
     void should_ReturnTrips_When_UserAreFriends() {
-
-        User friend = new User();
-        friend.addFriend(ANOTHER_USER);
-        friend.addFriend(REGISTERED_USER);
-        friend.addTrip(LONDON);
-        friend.addTrip(BARCELONA);
+        User friend = UserBuilder.aUser()
+                .friendsWith(ANOTHER_USER, REGISTERED_USER)
+                .withTripsTo(LONDON, BARCELONA)
+                .build();
 
         List<Trip> trips = tripService.getTripsByUser(friend);
         assertThat(trips).containsExactlyInAnyOrder(LONDON, BARCELONA);
