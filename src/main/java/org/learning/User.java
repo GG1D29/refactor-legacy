@@ -23,4 +23,7 @@ public class User {
         return friends;
     }
 
+    public boolean isFriendsWith(User anotherUser) {
+        return friends.contains(anotherUser);
+    }
 }
