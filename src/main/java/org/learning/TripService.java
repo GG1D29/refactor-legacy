@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TripService {
-    public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
+    public List<Trip> getTripsByUser(User user) {
         List<Trip> trips = new ArrayList<>();
         User loggedInUser = getLoggedInUser();
         boolean isFriend = false;
@@ -17,7 +17,7 @@ public class TripService {
             }
 
             if (isFriend) {
-                trips = TripDAO.findTripsByUser(user);
+                trips = getTripsBy(user);
             }
 
             return trips;
@@ -25,6 +25,10 @@ public class TripService {
             throw new UserNotLoggedInException();
         }
 
+    }
+
+    List<Trip> getTripsBy(User user) {
+        return TripDAO.findTripsByUser(user);
     }
 
     User getLoggedInUser() {
